@@ -1,0 +1,81 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  snippets      Snippet[]
+  accounts      Account[]
+  sessions      Session[]
+}
+
+model Snippet {
+  id          String    @id @default(cuid())
+  title       String
+  content     String
+  language    String
+  description String?
+  complexity  String?  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  author      User?     @relation(fields: [authorId], references: [id])
+  authorId    String?
+  tags        SnippetTag[]
+  slug        String    @unique
+}
+
+model Tag {
+  id    String @id @default(cuid())
+  name  String @unique
+  type  String
+  items SnippetTag[]
+}
+
+model SnippetTag {
+  id        String  @id @default(cuid())
+  snippet   Snippet @relation(fields: [snippetId], references: [id])
+  snippetId String
+  tag       Tag     @relation(fields: [tagId], references: [id])
+  tagId     String
+
+  @@unique([snippetId, tagId])
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  oauth_token_secret String?
+  oauth_token       String?
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id])
+}

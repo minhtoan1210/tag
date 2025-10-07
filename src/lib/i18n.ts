@@ -1,0 +1,1 @@
+import { NextIntlClientProvider } from 'next-intl'
