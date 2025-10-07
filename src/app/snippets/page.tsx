@@ -23,7 +23,7 @@ export default function SnippetsPage() {
           </p>
         </div>
         <Link
-          href="/snippets/create-new"
+          href="/snippets/post-new"
           className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-4 py-2 rounded-md transition"
         >
           Add snippet
@@ -41,17 +41,17 @@ export default function SnippetsPage() {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-800">
-            {list.map((s) => (
-              <tr key={s.id} className="hover:bg-[#1e293b] transition">
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">{s.title}</td>
-                <td className="px-6 py-4 text-sm text-gray-400">{s.description}</td>
+            {list.map((item) => (
+              <tr key={item.id} className="hover:bg-[#1e293b] transition">
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">{item.title}</td>
+                <td className="px-6 py-4 text-sm text-gray-400">{item.description}</td>
                 <td className="px-6 py-4 text-sm text-gray-400">
-                  {s.tags && s.tags.length > 0
-                    ? s.tags.map(t => t.tag?.name).join(', ')
+                  {item.tags && item.tags.length > 0
+                    ? item.tags.map((itemTag: { tag: { name: string } }) => itemTag.tag?.name).join(', ')
                     : 'No tags'}
                 </td>
                 <td className="px-6 py-4 text-right text-sm">
-                  <Link href={`/snippets/${s.id}/edit`} className="text-indigo-400 hover:text-indigo-300">
+                  <Link href={`/snippets/post-edit/${item.id}`} className="text-indigo-400 hover:text-indigo-300">
                     Edit
                   </Link>
                 </td>
