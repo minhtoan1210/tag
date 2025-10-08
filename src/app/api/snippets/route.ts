@@ -1,62 +1,127 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { v4 as uuidv4 } from "uuid";
+import { cookies } from "next/headers";
+import jwt from "jsonwebtoken";
 
 export async function GET(req: Request) {
-  const url = new URL(req.url);
-  console.log("url", url);
-  const id = url.searchParams.get("id");
-  if (id) {
-    const s = await prisma.snippet.findUnique({
-      where: { id },
-      include: { tags: { include: { tag: true } }, author: true },
-    });
-    return NextResponse.json(s);
+  try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("token")?.value;
+    let userId: string | null = null;
+
+    if (token) {
+      try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
+          userId: string;
+        };
+        userId = decoded.userId;
+      } catch (err) {
+        console.warn("Invalid token:", err);
+      }
+    }
+
+    const url = new URL(req.url);
+    const id = url.searchParams.get("id");
+
+    if (id) {
+      const s = await prisma.snippet.findUnique({
+        where: { id },
+        include: { tags: { include: { tag: true } }, author: true },
+      });
+      return NextResponse.json(s);
+    }
+
+    let snippets;
+    if (userId) {
+      snippets = await prisma.snippet.findMany({
+        where: { authorId: userId },
+        include: { tags: { include: { tag: true } }, author: true },
+        orderBy: { createdAt: "desc" },
+      });
+    } else {
+      snippets = await prisma.snippet.findMany({
+        include: { tags: { include: { tag: true } }, author: true },
+        orderBy: { createdAt: "desc" },
+      });
+    }
+
+    return NextResponse.json(snippets);
+  } catch (error) {
+    console.error("Error fetching snippets:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
-  const list = await prisma.snippet.findMany({
-    include: { tags: { include: { tag: true } }, author: true },
-    orderBy: { createdAt: "desc" },
-  });
-  return NextResponse.json(list);
 }
 
 export async function POST(req: Request) {
-  const body = await req.json();
-  // expected: { title, content, language, description, tags: ['js','algos'], authorId }
+  try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("token")?.value;
+    if (!token) {
+      return NextResponse.json(
+        { error: "Unauthorized - No token found" },
+        { status: 401 }
+      );
+    }
 
-  const slug =
-    (body.title || "snippet").toLowerCase().replace(/\s+/g, "-").slice(0, 80) +
-    "-" +
-    uuidv4().slice(0, 6);
+    let userId: string;
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
+        userId: string;
+      };
+      userId = decoded.userId;
+    } catch (err) {
+      console.error("Invalid token:", err);
+      return NextResponse.json({ error: "Invalid token" }, { status: 401 });
+    }
 
-  const uniqueTags = [...new Set(body.tags as string[])];
+    const body = await req.json();
+    const slug =
+      (body.title || "snippet")
+        .toLowerCase()
+        .replace(/\s+/g, "-")
+        .slice(0, 80) +
+      "-" +
+      uuidv4().slice(0, 6);
 
-  const snippet = await prisma.snippet.create({
-    data: {
-      title: body.title,
-      content: body.content,
-      language: body.language,
-      description: body.description,
-      slug,
-      authorId: body.authorId,
-      type: "public",
-      tags: {
-        create: uniqueTags.map((t: string) => ({
-          tag: {
-            connectOrCreate: {
-              where: { name: t },
-              create: { name: t, type: "language" },
+    const uniqueTags = [...new Set(body.tags as string[])];
+
+    const snippet = await prisma.snippet.create({
+      data: {
+        title: body.title,
+        content: body.content,
+        language: body.language,
+        description: body.description,
+        slug,
+        authorId: userId,
+        type: "public",
+        tags: {
+          create: uniqueTags.map((t: string) => ({
+            tag: {
+              connectOrCreate: {
+                where: { name: t },
+                create: { name: t, type: "language" },
+              },
             },
-          },
-        })),
+          })),
+        },
       },
-    },
-    include: {
-      tags: { include: { tag: true } },
-    },
-  });
+      include: {
+        tags: { include: { tag: true } },
+      },
+    });
 
-  return NextResponse.json(snippet, { status: 201 });
+    return NextResponse.json(snippet, { status: 201 });
+  } catch (error) {
+    console.error("Error creating snippet:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
 }
 
 export async function PUT(req: Request) {

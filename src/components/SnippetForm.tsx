@@ -91,9 +91,9 @@ export default function SnippetForm({
   }
 
   return (
-    <div className="min-h-screen bg-[#0f0f0f] text-gray-100 flex flex-col items-center py-12 px-4">
+    <div className="min-h-screen text-gray-100 flex flex-col items-center py-12 px-4">
       <div className="max-w-3xl w-full">
-        <h1 className="text-4xl font-bold mb-8 text-center text-[#ffe94e]">
+        <h1 className="text-4xl font-bold mb-8 text-center text-[white]">
           {typePage === "update" ? "Update" : "Create"} Snippet
         </h1>
 
@@ -172,7 +172,7 @@ export default function SnippetForm({
           <button
             type="submit"
             disabled={loading}
-            className="w-full mt-4 py-3 rounded-xl bg-[#ffe94e] text-black font-semibold hover:bg-[#fddc3c] transition disabled:opacity-50"
+            className="w-full mt-4 py-3 rounded-xl bg-[white] text-black font-semibold hover:bg-[#fddc3c] transition disabled:opacity-50"
           >
             {loading ? "Saving..." : "Save Snippet"}
           </button>

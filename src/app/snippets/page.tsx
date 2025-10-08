@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 
 export default function SnippetsPage() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [list, setList] = useState<any[]>([]);
 
   const fetchSnippets = async () => {
@@ -19,8 +20,6 @@ export default function SnippetsPage() {
     await fetch(`/api/snippets?id=${id}`, { method: "DELETE" });
     await fetchSnippets();
   };
-
-  console.log("list", list);
 
   return (
     <main className="max-w-5xl mx-auto p-6 text-white">

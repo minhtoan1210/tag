@@ -1,23 +1,20 @@
 "use client";
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 export default function FormLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
   const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError("");
-
     try {
       const res = await fetch("/api/login", {
         method: "POST",
@@ -30,17 +27,18 @@ export default function FormLogin() {
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.error || "Login failed");
+        toast.error(data.error || "Login failed ");
         setLoading(false);
         return;
       }
 
-      console.log("Login success:", data);
+      toast.success("Login successful!");
       setLoading(false);
       router.push("/");
+      router.refresh();
     } catch (err) {
       console.error(err);
-      setError("Internal error");
+      toast.error("Internal error ");
       setLoading(false);
     }
   };
@@ -48,7 +46,7 @@ export default function FormLogin() {
   return (
     <form onSubmit={handleLogin} className="space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
+        <Label htmlFor="email" className="text-gray-400">Email</Label>
         <Input
           id="email"
           type="email"
@@ -56,11 +54,12 @@ export default function FormLogin() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
+          className="w-full bg-[#111] border border-[#333] rounded-lg px-3 py-2 text-gray-100 focus:ring-2 focus:ring-[#ffe94e] focus:outline-none"
         />
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="password">Password</Label>
+        <Label htmlFor="password" className="text-gray-400">Password</Label>
         <Input
           id="password"
           type="password"
@@ -68,10 +67,11 @@ export default function FormLogin() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
+          className="w-full bg-[#111] border border-[#333] rounded-lg px-3 py-2 text-gray-100 focus:ring-2 focus:ring-[#ffe94e] focus:outline-none"
         />
       </div>
 
-      <Button type="submit" className="w-full mt-2">
+      <Button type="submit" className="w-full mt-2 cursor-pointer bg-white text-[black] hover:bg-white hover:text-black">
         {loading ? "Logging in..." : "Login"}
       </Button>
     </form>

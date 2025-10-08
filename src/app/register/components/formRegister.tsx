@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 export default function RegisterFormPage() {
   const [formData, setFormData] = useState({
@@ -25,7 +26,7 @@ export default function RegisterFormPage() {
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match!");
+      toast.error("Passwords do not match!");
       return;
     }
     try {
@@ -39,13 +40,14 @@ export default function RegisterFormPage() {
       });
       const data = await res.json();
       if (!res.ok) {
-        alert(data.error || "Failed to register");
+        toast.error(data.error || "Failed to register");
         return;
       }
+      toast.success("Registered successfully!");
       router.push("/login");
     } catch (error) {
       console.error("Error registering:", error);
-      alert("Something went wrong!");
+      toast.error("Something went wrong!");
     }
   };
 
@@ -87,7 +89,7 @@ export default function RegisterFormPage() {
         />
       </div>
 
-      <Button type="submit" className="w-full mt-2">
+      <Button type="submit" className="w-full mt-2 cursor-pointer">
         Register
       </Button>
     </form>
