@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 export default function RegisterFormPage() {
   const [formData, setFormData] = useState({
