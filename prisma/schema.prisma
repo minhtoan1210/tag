@@ -9,13 +9,10 @@ datasource db {
 
 model User {
   id        String    @id @default(cuid())
-  name      String?
   email     String    @unique
-  image     String?
+  password  String
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  accounts  Account[]
-  sessions  Session[]
   snippets  Snippet[]
 }
 
@@ -32,12 +29,13 @@ model Snippet {
   slug        String       @unique
   author      User?        @relation(fields: [authorId], references: [id])
   tags        SnippetTag[]
+  type        String       @default("public")
 }
 
 model Tag {
   id    String       @id @default(cuid())
   name  String       @unique
-  type  String
+  type  String       @default("topic")
   items SnippetTag[]
 }
 
@@ -49,32 +47,4 @@ model SnippetTag {
   snippet   Snippet @relation(fields: [snippetId], references: [id])
 
   @@unique([snippetId, tagId])
-}
-
-model Account {
-  id                 String  @id @default(cuid())
-  userId             String
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?
-  access_token       String?
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?
-  session_state      String?
-  oauth_token_secret String?
-  oauth_token        String?
-  user               User    @relation(fields: [userId], references: [id])
-
-  @@index([provider, providerAccountId])
-}
-
-model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id])
 }

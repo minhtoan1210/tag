@@ -7,7 +7,7 @@ export default function Home() {
         <h1 className="text-2xl font-bold">SnippetShare</h1>
         <nav className="space-x-4">
           <Link href="/snippets">Snippets</Link>
-          <Link href="/snippets/new" className="ml-2 rounded border px-3 py-1">New</Link>
+          <Link href="/snippets/post-new" className="ml-2 rounded border px-3 py-1">New</Link>
         </nav>
       </header>
 

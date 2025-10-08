@@ -1,17 +1,26 @@
-'use client';
-import { useEffect, useState } from 'react';
-import Link from 'next/link';
+"use client";
+import { useEffect, useState } from "react";
+import Link from "next/link";
 
 export default function SnippetsPage() {
   const [list, setList] = useState<any[]>([]);
 
+  const fetchSnippets = async () => {
+    const res = await fetch("/api/snippets");
+    const data = await res.json();
+    setList(data);
+  };
+
   useEffect(() => {
-    fetch('/api/snippets')
-      .then(res => res.json())
-      .then(setList);
+    fetchSnippets();
   }, []);
 
-  console.log("list", list)
+  const handleDetele = async (id: string) => {
+    await fetch(`/api/snippets?id=${id}`, { method: "DELETE" });
+    await fetchSnippets();
+  };
+
+  console.log("list", list);
 
   return (
     <main className="max-w-5xl mx-auto p-6 text-white">
@@ -19,7 +28,8 @@ export default function SnippetsPage() {
         <div>
           <h2 className="text-2xl font-semibold">Snippets</h2>
           <p className="text-gray-400">
-            A list of all snippets in your project including title, description and tags.
+            A list of all snippets in your project including title, description
+            and tags.
           </p>
         </div>
         <Link
@@ -34,26 +44,54 @@ export default function SnippetsPage() {
         <table className="min-w-full divide-y divide-gray-700">
           <thead className="bg-[#1f2937]">
             <tr>
-              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-300">Title</th>
-              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-300">Description</th>
-              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-300">Tags</th>
-              <th className="px-6 py-3 text-right text-sm font-semibold text-gray-300">Action</th>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-300">
+                Title
+              </th>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-300">
+                Description
+              </th>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-300">
+                Tags
+              </th>
+              <th className="px-6 py-3 text-right text-sm font-semibold text-gray-300">
+                Action
+              </th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-800">
             {list.map((item) => (
               <tr key={item.id} className="hover:bg-[#1e293b] transition">
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">{item.title}</td>
-                <td className="px-6 py-4 text-sm text-gray-400">{item.description}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                  {item.title}
+                </td>
+                <td className="px-6 py-4 text-sm text-gray-400">
+                  {item.content}
+                </td>
                 <td className="px-6 py-4 text-sm text-gray-400">
                   {item.tags && item.tags.length > 0
-                    ? item.tags.map((itemTag: { tag: { name: string } }) => itemTag.tag?.name).join(', ')
-                    : 'No tags'}
+                    ? item.tags
+                        .map(
+                          (itemTag: { tag: { name: string } }) =>
+                            itemTag.tag?.name
+                        )
+                        .join(", ")
+                    : "No tags"}
                 </td>
                 <td className="px-6 py-4 text-right text-sm">
-                  <Link href={`/snippets/post-edit/${item.id}`} className="text-indigo-400 hover:text-indigo-300">
+                  <Link
+                    href={`/snippets/post-edit/${item.id}`}
+                    className="text-indigo-400 hover:text-indigo-300 cursor-pointer"
+                  >
                     Edit
                   </Link>
+                </td>
+                <td className="px-6 py-4 text-right text-sm">
+                  <div
+                    onClick={() => handleDetele(item.id)}
+                    className="text-indigo-400 hover:text-indigo-300 cursor-pointer"
+                  >
+                    DELETE
+                  </div>
                 </td>
               </tr>
             ))}
