@@ -23,16 +23,27 @@ export async function GET(req: Request) {
 
     const url = new URL(req.url);
     const id = url.searchParams.get("id");
+    const page = url.searchParams.get("page");
 
     if (id) {
-      const s = await prisma.snippet.findUnique({
+      const data = await prisma.snippet.findUnique({
         where: { id },
         include: { tags: { include: { tag: true } }, author: true },
       });
-      return NextResponse.json(s);
+      return NextResponse.json(data);
     }
 
     let snippets;
+
+    if (page === "home") {
+      snippets = await prisma.snippet.findMany({
+        include: { tags: { include: { tag: true } }, author: true },
+        orderBy: { createdAt: "desc" },
+      });
+
+      return NextResponse.json(snippets);
+    }
+
     if (userId) {
       snippets = await prisma.snippet.findMany({
         where: { authorId: userId },
@@ -78,6 +89,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Invalid token" }, { status: 401 });
     }
 
+    console.log("userId", userId)
+    
     const body = await req.json();
     const slug =
       (body.title || "snippet")
@@ -126,12 +139,71 @@ export async function POST(req: Request) {
 
 export async function PUT(req: Request) {
   const body = await req.json();
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token")?.value;
+  if (!token) {
+    return NextResponse.json(
+      { error: "Unauthorized - No token found" },
+      { status: 401 }
+    );
+  }
+
+  let userId: string;
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
+      userId: string;
+    };
+    userId = decoded.userId;
+  } catch (err) {
+    console.error("Invalid token:", err);
+    return NextResponse.json({ error: "Invalid token" }, { status: 401 });
+  }
 
   if (!body.id) {
     return NextResponse.json({ message: "id required" }, { status: 400 });
   }
 
-  console.log("bodybody", body);
+  const isCheck = await prisma.snippet.findUnique({
+    where: { id: body.id, authorId: userId },
+  });
+
+  if (!isCheck) {
+    const slug =
+      (body.title || "snippet")
+        .toLowerCase()
+        .replace(/\s+/g, "-")
+        .slice(0, 80) +
+      "-" +
+      uuidv4().slice(0, 6);
+
+    const uniqueTags = [...new Set(body.tags as string[])];
+
+    const snippet = await prisma.snippet.create({
+      data: {
+        title: body.title,
+        content: body.content,
+        language: body.language,
+        description: body.description,
+        slug,
+        authorId: userId,
+        type: "public",
+        tags: {
+          create: uniqueTags.map((t: string) => ({
+            tag: {
+              connectOrCreate: {
+                where: { name: t },
+                create: { name: t, type: "language" },
+              },
+            },
+          })),
+        },
+      },
+      include: {
+        tags: { include: { tag: true } },
+      },
+    });
+    return NextResponse.json(snippet, { status: 201 });
+  }
 
   const updated = await prisma.snippet.update({
     where: { id: body.id },

@@ -7,7 +7,9 @@ export function middleware(req: NextRequest) {
   const url = req.nextUrl.clone();
   const path = req.nextUrl.pathname;
 
-  const protectedPaths = ["/mua-a", "/mua-b"];
+  console.log("token", token)
+
+  const protectedPaths = ["/snippets", "/snippets/post-new"];
 
   if (protectedPaths.some((protectedPath) => path.startsWith(protectedPath))) {
     if (!token) {
@@ -28,5 +30,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/mua-:path*"], 
+  matcher: ["/snippets", "/snippets/post-new"],
 };

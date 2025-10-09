@@ -26,8 +26,16 @@ export default function FormLogin() {
 
       const data = await res.json();
 
+      console.log("data", data);
+
       if (!res.ok) {
         toast.error(data.error || "Login failed ");
+        setLoading(false);
+        return;
+      }
+
+      if (!data) {
+        console.log("asdsa")
         setLoading(false);
         return;
       }
@@ -46,7 +54,9 @@ export default function FormLogin() {
   return (
     <form onSubmit={handleLogin} className="space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="email" className="text-gray-400">Email</Label>
+        <Label htmlFor="email" className="text-gray-400">
+          Email
+        </Label>
         <Input
           id="email"
           type="email"
@@ -59,7 +69,9 @@ export default function FormLogin() {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="password" className="text-gray-400">Password</Label>
+        <Label htmlFor="password" className="text-gray-400">
+          Password
+        </Label>
         <Input
           id="password"
           type="password"
@@ -71,7 +83,10 @@ export default function FormLogin() {
         />
       </div>
 
-      <Button type="submit" className="w-full mt-2 cursor-pointer bg-white text-[black] hover:bg-white hover:text-black">
+      <Button
+        type="submit"
+        className="w-full mt-2 cursor-pointer bg-white text-[black] hover:bg-white hover:text-black"
+      >
         {loading ? "Logging in..." : "Login"}
       </Button>
     </form>

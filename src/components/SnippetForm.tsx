@@ -1,7 +1,25 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { Button } from "./ui/button";
 
 type SnippetFormType = {
   initial?: any;
@@ -15,7 +33,7 @@ type SnippetBody = {
   content: string;
   language: string;
   tags: string[];
-  authorId?: string;
+  authorId?: string | undefined;
 };
 
 export default function SnippetForm({
@@ -26,13 +44,23 @@ export default function SnippetForm({
   const [title, setTitle] = useState(initial?.title || "");
   const [content, setContent] = useState(initial?.content || "");
   const [language, setLanguage] = useState(initial?.language || "javascript");
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const [userId, setUser] = useState<any>(null);
+  const [loadingUser, setLoadingUser] = useState(true);
   const [tags, setTags] = useState(
     (initial?.tags || [])
       .map((item: { tag: { name: string } }) => item.tag.name)
       .join(",")
   );
-  const [loading, setLoading] = useState(false);
-  const router = useRouter();
+
+  useEffect(() => {
+    fetch("/api/me", { credentials: "include" })
+      .then((res) => res.json())
+      .then(setUser)
+      .catch(console.error)
+      .finally(() => setLoadingUser(false));
+  }, []);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -44,7 +72,7 @@ export default function SnippetForm({
       language,
       tags: tags
         .split(",")
-        .map((t) => t.trim())
+        .map((t: string) => t.trim())
         .filter(Boolean),
       authorId,
       id: initial?.id,
@@ -72,51 +100,55 @@ export default function SnippetForm({
         });
       }
 
-      // 🔹 Đợi server trả JSON xong mới chuyển trang
-      const data = await res.json();
-      console.log("✅ Saved snippet:", data);
-
       if (res.ok) {
         router.push("/snippets");
-        router.refresh(); // làm mới list snippets
+        router.refresh();
+        toast.success("Successfully created!");
       } else {
-        alert(data.message || "Something went wrong");
+        toast.error("Something went wrong");
       }
     } catch (err) {
-      console.error("❌ Error:", err);
-      alert("Error submitting snippet");
+      toast.error("Error submitting snippet");
     } finally {
       setLoading(false);
     }
   }
 
+  async function handleSubmit(e: React.FormEvent) {
+    console.log("hehe");
+  }
+
+  if (loadingUser) return <div>Đang kiểm tra đăng nhập...</div>;
+
   return (
     <div className="min-h-screen text-gray-100 flex flex-col items-center py-12 px-4">
       <div className="max-w-3xl w-full">
-        <h1 className="text-4xl font-bold mb-8 text-center text-[white]">
-          {typePage === "update" ? "Update" : "Create"} Snippet
+        <h1 className="text-4xl font-bold mb-4 text-center text-gray-400">
+          Snippet
         </h1>
+        <p className="text-center mb-4 text-gray-400">
+          Create and share beautiful images of your source code. <br />
+          Start typing or drop a file into the text area to get started.
+        </p>
 
         <form
           onSubmit={submit}
           className="bg-[#1b1b1b] rounded-2xl shadow-lg border border-[#2a2a2a] p-6 space-y-4"
         >
-          {/* Title */}
           <div className="space-y-2">
             <label className="block text-sm text-gray-400">Title</label>
-            <input
+            <Input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Your snippet title..."
               required
-              className="w-full bg-[#111] border border-[#333] rounded-lg px-3 py-2 text-gray-100 focus:ring-2 focus:ring-[#ffe94e] focus:outline-none"
+              className="bg-[#111] border border-[#333] text-gray-100 placeholder:text-gray-500 focus:ring-2 focus:ring-[#ffe94e] focus:outline-none"
             />
           </div>
 
-          {/* Language */}
           <div className="space-y-2">
             <label className="block text-sm text-gray-400">Language</label>
-            <select
+            {/* <select
               value={language}
               onChange={(e) => setLanguage(e.target.value)}
               required
@@ -134,7 +166,26 @@ export default function SnippetForm({
               <option value="go">Go</option>
               <option value="rust">Rust</option>
               <option value="bash">Bash</option>
-            </select>
+            </select> */}
+            <Select value={language} onValueChange={setLanguage}>
+              <SelectTrigger className="w-full bg-[#111] border border-[#333] rounded-lg text-gray-100 focus:ring-2 focus:ring-[#ffe94e] focus:outline-none">
+                <SelectValue placeholder="Chọn ngôn ngữ" />
+              </SelectTrigger>
+              <SelectContent className="bg-[#111] text-gray-100 border border-[#333]">
+                <SelectItem value="javascript">JavaScript</SelectItem>
+                <SelectItem value="typescript">TypeScript</SelectItem>
+                <SelectItem value="python">Python</SelectItem>
+                <SelectItem value="java">Java</SelectItem>
+                <SelectItem value="csharp">C#</SelectItem>
+                <SelectItem value="php">PHP</SelectItem>
+                <SelectItem value="html">HTML</SelectItem>
+                <SelectItem value="css">CSS</SelectItem>
+                <SelectItem value="sql">SQL</SelectItem>
+                <SelectItem value="go">Go</SelectItem>
+                <SelectItem value="rust">Rust</SelectItem>
+                <SelectItem value="bash">Bash</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
           {/* Code Editor */}
@@ -168,14 +219,63 @@ export default function SnippetForm({
               className="w-full bg-[#111] border border-[#333] rounded-lg px-3 py-2 text-gray-100 focus:ring-2 focus:ring-[#ffe94e] focus:outline-none"
             />
           </div>
+          <TooltipProvider>
+            <div className="flex justify-end">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div
+                    className={
+                      !userId?.user
+                        ? "opacity-50 cursor-not-allowed"
+                        : "cursor-pointer"
+                    }
+                  >
+                    <Button
+                      type="submit"
+                      disabled={!userId?.user}
+                      className={`w-[100px] mr-2 mt-4 text-[14px] py-3 rounded-xl cursor-pointer bg-white text-black font-semibold hover:bg-white transition`}
+                    >
+                      {loading ? "Saving..." : "Save"}
+                    </Button>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent side="top" align="center">
+                  <p>
+                    {userId?.user
+                      ? "Lưu snippet của bạn"
+                      : "Bạn cần đăng nhập để lưu"}
+                  </p>
+                </TooltipContent>
+              </Tooltip>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full mt-4 py-3 rounded-xl bg-[white] text-black font-semibold hover:bg-[#fddc3c] transition disabled:opacity-50"
-          >
-            {loading ? "Saving..." : "Save Snippet"}
-          </button>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div
+                    className={
+                      !userId?.user
+                        ? "opacity-50 cursor-not-allowed"
+                        : "cursor-pointer"
+                    }
+                  >
+                    <Button
+                      onClick={handleSubmit}
+                      disabled={!userId?.user}
+                      className={`w-[100px] mt-4 text-[14px] py-3 cursor-pointer rounded-xl bg-white text-black font-semibold hover:bg-white transition `}
+                    >
+                      Share
+                    </Button>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent side="top" align="center">
+                  <p>
+                    {userId?.user
+                      ? "Chia sẻ snippet của bạn"
+                      : "Bạn cần đăng nhập để chia sẻ"}
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </div>
+          </TooltipProvider>
         </form>
       </div>
     </div>

@@ -9,7 +9,7 @@ import FormLogin from "./components/formLogin";
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div className="min-h-screen flex items-center justify-center bg-[#151515]">
       <Card className="w-full max-w-sm shadow-lg bg-[#1b1b1b] rounded-2xl border border-[#2a2a2a] p-6 space-y-4">
         <CardHeader >
           <CardTitle className="text-2xl text-center font-semibold text-[white]">

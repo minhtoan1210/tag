@@ -27,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="mdl-js">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#131417]`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#151515]`}
       >
         <Navbar />
         {children}

@@ -1,25 +1,12 @@
-"use client";
-import { useEffect, useState } from "react";
 import Link from "next/link";
+import ContentSnippetsComponent from "./contentSnippets";
+import { cookies } from "next/headers";
 
-export default function SnippetsPage() {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [list, setList] = useState<any[]>([]);
+export default async function SnippetsPage() {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token")?.value;
 
-  const fetchSnippets = async () => {
-    const res = await fetch("/api/snippets");
-    const data = await res.json();
-    setList(data);
-  };
-
-  useEffect(() => {
-    fetchSnippets();
-  }, []);
-
-  const handleDetele = async (id: string) => {
-    await fetch(`/api/snippets?id=${id}`, { method: "DELETE" });
-    await fetchSnippets();
-  };
+  console.log("token", token)
 
   return (
     <main className="max-w-5xl mx-auto p-6 text-white">
@@ -39,75 +26,7 @@ export default function SnippetsPage() {
         </Link>
       </div>
 
-      <div className="overflow-hidden rounded-lg border border-gray-700 bg-[#111827] shadow">
-        <table className="min-w-full divide-y divide-gray-700">
-          <thead className="bg-[#1f2937]">
-            <tr>
-              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-300">
-                Title
-              </th>
-              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-300">
-                Description
-              </th>
-              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-300">
-                Tags
-              </th>
-              <th className="px-6 py-3 text-right text-sm font-semibold text-gray-300">
-                Action
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-800">
-            {list.map((item) => (
-              <tr key={item.id} className="hover:bg-[#1e293b] transition">
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                  {item.title}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-400">
-                  {item.content}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-400">
-                  {item.tags && item.tags.length > 0
-                    ? item.tags
-                        .map(
-                          (itemTag: { tag: { name: string } }) =>
-                            itemTag.tag?.name
-                        )
-                        .join(", ")
-                    : "No tags"}
-                </td>
-                <td className="px-6 py-4 text-right text-sm">
-                  <Link
-                    href={`/snippets/post-edit/${item.id}`}
-                    className="text-indigo-400 hover:text-indigo-300 cursor-pointer"
-                  >
-                    Edit
-                  </Link>
-                </td>
-                <td className="px-6 py-4 text-right text-sm">
-                  <div
-                    onClick={() => handleDetele(item.id)}
-                    className="text-indigo-400 hover:text-indigo-300 cursor-pointer"
-                  >
-                    DELETE
-                  </div>
-                </td>
-              </tr>
-            ))}
-
-            {list.length === 0 && (
-              <tr>
-                <td
-                  colSpan={4}
-                  className="px-6 py-4 text-center text-gray-500 text-sm"
-                >
-                  No snippets found.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+      <ContentSnippetsComponent user={token}/>
     </main>
   );
 }
