@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
@@ -11,7 +12,6 @@ type ContentSnippets = {
 };
 
 export default function ContentSnippetsComponent({ user, page }: ContentSnippets) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [list, setList] = useState<any[]>([]);
   const router = useRouter();
 

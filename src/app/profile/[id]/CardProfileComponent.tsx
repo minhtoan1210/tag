@@ -1,7 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { useEffect, useState } from "react";
-import Link from "next/link";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { useRouter } from "next/navigation";
@@ -14,7 +11,6 @@ type ContentSnippets = {
 export default function CardProfileComponent({
   list,
 }: ContentSnippets) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const router = useRouter();
 
   const handleShowDetail = (id: string) => {

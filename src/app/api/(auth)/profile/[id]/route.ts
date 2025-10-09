@@ -3,9 +3,9 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   req: NextRequest,
- { params }: { params: { id: string } }
+ context: { params: Promise<{ id: string }> }
 ) {
-  const { id } = params;
+  const { id } = await context.params;
 
   const snippets = await prisma.snippet.findMany({
     where: { authorId: id },

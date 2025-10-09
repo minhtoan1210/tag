@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
@@ -6,7 +5,6 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import ContentSnippetsComponent from "./CardProfileComponent";
 import CardProfileComponent from "./CardProfileComponent";
 
 export default function ProfileCardComponent() {

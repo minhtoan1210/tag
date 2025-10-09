@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useEffect, useState } from "react";
@@ -107,14 +106,15 @@ export default function SnippetForm({
       } else {
         toast.error("Something went wrong");
       }
-    } catch (err) {
-      toast.error("Error submitting snippet");
+    } catch (err: any) {
+      toast.error(`Error submitting snippet`);
+      console.log("err", err)
     } finally {
       setLoading(false);
     }
   }
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit() {
     console.log("hehe");
   }
 

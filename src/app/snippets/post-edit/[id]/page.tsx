@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import SnippetForm from "@/components/SnippetForm";
 import { useParams } from "next/navigation";
@@ -19,6 +18,7 @@ export default function SnippetsEditPage() {
         const data = await res.json();
         setSnippet(data);
       } catch (err: any) {
+        console.log("err", err)
       } finally {
         setLoadingSnippet(false);
       }

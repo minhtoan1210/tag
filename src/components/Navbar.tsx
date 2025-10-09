@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { cookies } from "next/headers";
@@ -25,7 +24,6 @@ export default async function Navbar() {
           🚀 Snippet
         </Link>
 
-        {/* Menu links */}
         <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-muted-foreground">
           <Link href="/" className="text-[white]">
             Home
