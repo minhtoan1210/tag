@@ -37,7 +37,7 @@ export default function ContentSnippetsComponent({ user, page }: ContentSnippets
   return (
     <div className="overflow-hidden rounded-lg border border-gray-700 bg-[#111827] shadow">
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-2 p-2">
-        {list.map((item) => (
+        {list?.map((item) => (
           <div
             key={item.id}
             className="group relative bg-[#1e293b] border border-gray-700 rounded-lg p-4 hover:bg-[#334155] transition"
@@ -80,7 +80,7 @@ export default function ContentSnippetsComponent({ user, page }: ContentSnippets
               <strong>Tags:</strong>{" "}
               {item.tags && item.tags.length > 0
                 ? item.tags
-                    .map(
+                    ?.map(
                       (itemTag: { tag: { name: string } }) => itemTag.tag?.name
                     )
                     .join(", ")

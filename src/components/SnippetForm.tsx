@@ -49,7 +49,7 @@ export default function SnippetForm({
   const [loadingUser, setLoadingUser] = useState(true);
   const [tags, setTags] = useState(
     (initial?.tags || [])
-      .map((item: { tag: { name: string } }) => item.tag.name)
+      ?.map((item: { tag: { name: string } }) => item.tag.name)
       .join(",")
   );
 
@@ -71,7 +71,7 @@ export default function SnippetForm({
       language,
       tags: tags
         .split(",")
-        .map((t: string) => t.trim())
+        ?.map((t: string) => t.trim())
         .filter(Boolean),
       authorId,
       id: initial?.id,
