@@ -2,11 +2,14 @@ import Link from "next/link";
 import ContentSnippetsComponent from "./contentSnippets";
 import { cookies } from "next/headers";
 
+export const metadata = {
+  title: "Snippets - SnippetShare",
+  description: "Danh sách tất cả snippets trong dự án của bạn, bao gồm tiêu đề, mô tả và tags.",
+};
+
 export default async function SnippetsPage() {
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
-
-  console.log("token", token)
 
   return (
     <main className="max-w-5xl mx-auto p-6 text-white">

@@ -53,7 +53,9 @@ export default function RegisterFormPage() {
   return (
     <form onSubmit={handleRegister} className="space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
+        <Label htmlFor="email" className="text-gray-400">
+          Email
+        </Label>
         <Input
           id="email"
           type="email"
@@ -61,11 +63,14 @@ export default function RegisterFormPage() {
           value={formData.email}
           onChange={handleChange}
           required
+          className="w-full bg-[#111] border border-[#333] rounded-lg px-3 py-2 text-gray-100 focus:ring-2 focus:ring-[#ffe94e] focus:outline-none"
         />
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="password">Password</Label>
+        <Label htmlFor="password" className="text-gray-400">
+          Password
+        </Label>
         <Input
           id="password"
           type="password"
@@ -73,11 +78,14 @@ export default function RegisterFormPage() {
           value={formData.password}
           onChange={handleChange}
           required
+          className="w-full bg-[#111] border border-[#333] rounded-lg px-3 py-2 text-gray-100 focus:ring-2 focus:ring-[#ffe94e] focus:outline-none"
         />
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="confirmPassword">Confirm Password</Label>
+        <Label htmlFor="confirmPassword" className="text-gray-400">
+          Confirm Password
+        </Label>
         <Input
           id="confirmPassword"
           type="password"
@@ -85,10 +93,11 @@ export default function RegisterFormPage() {
           value={formData.confirmPassword}
           onChange={handleChange}
           required
+          className="w-full bg-[#111] border border-[#333] rounded-lg px-3 py-2 text-gray-100 focus:ring-2 focus:ring-[#ffe94e] focus:outline-none"
         />
       </div>
 
-      <Button type="submit" className="w-full mt-2 cursor-pointer">
+      <Button type="submit" className="w-full mt-2 cursor-pointer bg-[white] text-[#000] hover:bg-[white]">
         Register
       </Button>
     </form>
