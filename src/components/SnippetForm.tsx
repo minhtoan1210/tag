@@ -108,16 +108,21 @@ export default function SnippetForm({
       }
     } catch (err: any) {
       toast.error(`Error submitting snippet`);
-      console.log("err", err)
+      console.log("err", err);
     } finally {
       setLoading(false);
     }
   }
 
-  async function handleSubmit() {
-    console.log("hehe");
-  }
-
+  const handleSubmit = async () => {
+    try {
+      const url = window.location.href;
+      toast.success("Copy successful!");
+      await navigator.clipboard.writeText(url);
+    } catch (err) {
+      console.error("Failed to copy: ", err);
+    }
+  };
   if (loadingUser) return <div>Đang kiểm tra đăng nhập...</div>;
 
   return (
@@ -148,25 +153,6 @@ export default function SnippetForm({
 
           <div className="space-y-2">
             <label className="block text-sm text-gray-400">Language</label>
-            {/* <select
-              value={language}
-              onChange={(e) => setLanguage(e.target.value)}
-              required
-              className="w-full bg-[#111] border border-[#333] rounded-lg px-3 py-2 text-gray-100 focus:ring-2 focus:ring-[#ffe94e] focus:outline-none"
-            >
-              <option value="javascript">JavaScript</option>
-              <option value="typescript">TypeScript</option>
-              <option value="python">Python</option>
-              <option value="java">Java</option>
-              <option value="csharp">C#</option>
-              <option value="php">PHP</option>
-              <option value="html">HTML</option>
-              <option value="css">CSS</option>
-              <option value="sql">SQL</option>
-              <option value="go">Go</option>
-              <option value="rust">Rust</option>
-              <option value="bash">Bash</option>
-            </select> */}
             <Select value={language} onValueChange={setLanguage}>
               <SelectTrigger className="w-full bg-[#111] border border-[#333] rounded-lg text-gray-100 focus:ring-2 focus:ring-[#ffe94e] focus:outline-none">
                 <SelectValue placeholder="Chọn ngôn ngữ" />
@@ -258,6 +244,7 @@ export default function SnippetForm({
                     }
                   >
                     <Button
+                      type="button"
                       onClick={handleSubmit}
                       disabled={!userId?.user}
                       className={`w-[100px] mt-4 text-[14px] py-3 cursor-pointer rounded-xl bg-white text-black font-semibold hover:bg-white transition `}

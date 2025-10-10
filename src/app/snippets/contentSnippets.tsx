@@ -98,7 +98,7 @@ export default function ContentSnippetsComponent({
                   : "No tags"}
               </div>
 
-              {user && (
+              {user && page !==  'home' && (
                 <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                   <Link
                     href={`/snippets/post-edit/${item.id}`}

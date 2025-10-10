@@ -3,12 +3,12 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id        String    @id @default(cuid())
+  id        String    @id @default(cuid()) @map("_id")
   email     String    @unique
   password  String
   createdAt DateTime  @default(now())
@@ -17,7 +17,7 @@ model User {
 }
 
 model Snippet {
-  id          String       @id @default(cuid())
+  id          String      @id @default(cuid()) @map("_id")
   title       String
   content     String
   language    String
@@ -25,7 +25,7 @@ model Snippet {
   complexity  String?
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
-  authorId    String?
+  authorId    String?      
   slug        String       @unique
   author      User?        @relation(fields: [authorId], references: [id])
   tags        SnippetTag[]
@@ -33,16 +33,16 @@ model Snippet {
 }
 
 model Tag {
-  id    String       @id @default(cuid())
+  id    String      @id @default(cuid()) @map("_id")
   name  String       @unique
   type  String       @default("topic")
   items SnippetTag[]
 }
 
 model SnippetTag {
-  id        String  @id @default(cuid())
-  snippetId String
-  tagId     String
+  id        String  @id @default(cuid()) @map("_id")
+  snippetId String  
+  tagId     String  
   tag       Tag     @relation(fields: [tagId], references: [id])
   snippet   Snippet @relation(fields: [snippetId], references: [id])
 
