@@ -27,7 +27,7 @@ export default function ProfileCardComponent() {
 
   return (
     <>
-      <Card className="max-w-sm mx-auto p-4 bg-[#1E1E1E] text-white rounded-2xl shadow-md">
+      <Card className="max-w-sm mx-auto p-4 bg-[#1E1E1E] text-white rounded-2xl shadow-md mt-6">
         <CardHeader className="flex flex-col items-center">
           <Avatar className="h-20 w-20 border-2 border-gray-500 mb-3">
             <AvatarImage src={"/default-avatar.png"} alt={""} />

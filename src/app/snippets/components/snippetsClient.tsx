@@ -11,7 +11,7 @@ export default function SnippetsClient({
   const { t } = useTranslation();
   return (
     <main className="max-w-5xl mx-auto p-6 text-white">
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between items-center mb-6 flex-col md:flex-row ">
         <div>
           <h2 className="text-2xl font-semibold">{t("snippets")}</h2>
           <p className="text-gray-400">{t("snippets_page.title")}</p>
