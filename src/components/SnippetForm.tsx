@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Button } from "./ui/button";
+import { useTranslation } from "react-i18next";
 
 type SnippetFormType = {
   initial?: any;
@@ -52,12 +53,13 @@ export default function SnippetForm({
       ?.map((item: { tag: { name: string } }) => item.tag.name)
       .join(",")
   );
+  const { t } = useTranslation();
 
   useEffect(() => {
     fetch("/api/me", { credentials: "include" })
       .then((res) => res.json())
       .then(setUser)
-      .catch(console.error)
+      .catch(console.log)
       .finally(() => setLoadingUser(false));
   }, []);
 
@@ -120,42 +122,42 @@ export default function SnippetForm({
       toast.success("Copy successful!");
       await navigator.clipboard.writeText(url);
     } catch (err) {
-      console.error("Failed to copy: ", err);
+      console.log(err);
     }
   };
-  if (loadingUser) return <div>Đang kiểm tra đăng nhập...</div>;
+
+  if (loadingUser) return <div className="text-[white] text-center mt-2">{t("loading")}</div>;;
 
   return (
     <div className="min-h-screen text-gray-100 flex flex-col items-center py-12 px-4">
       <div className="max-w-3xl w-full">
         <h1 className="text-4xl font-bold mb-4 text-center text-gray-400">
-          Snippet
+          {t("snippet_form.snippet")}
         </h1>
         <p className="text-center mb-4 text-gray-400">
-          Create and share beautiful images of your source code. <br />
-          Start typing or drop a file into the text area to get started.
+          {t("snippet_form.title1")}<br/>
+          {t("snippet_form.title2")}
         </p>
-
         <form
           onSubmit={submit}
           className="bg-[#1b1b1b] rounded-2xl shadow-lg border border-[#2a2a2a] p-6 space-y-4"
         >
           <div className="space-y-2">
-            <label className="block text-sm text-gray-400">Title</label>
+            <label className="block text-sm text-gray-400">{t("snippet_form.title")}</label>
             <Input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="Your snippet title..."
+              placeholder= {t("snippet_form.your_snippet")}
               required
               className="bg-[#111] border border-[#333] text-gray-100 placeholder:text-gray-500 focus:ring-2 focus:ring-[#ffe94e] focus:outline-none"
             />
           </div>
 
           <div className="space-y-2">
-            <label className="block text-sm text-gray-400">Language</label>
+            <label className="block text-sm text-gray-400">{t("snippet_form.language")}</label>
             <Select value={language} onValueChange={setLanguage}>
               <SelectTrigger className="w-full bg-[#111] border border-[#333] rounded-lg text-gray-100 focus:ring-2 focus:ring-[#ffe94e] focus:outline-none">
-                <SelectValue placeholder="Chọn ngôn ngữ" />
+                <SelectValue placeholder={t("snippet_form.select_language")} />
               </SelectTrigger>
               <SelectContent className="bg-[#111] text-gray-100 border border-[#333]">
                 <SelectItem value="javascript">JavaScript</SelectItem>
@@ -174,15 +176,13 @@ export default function SnippetForm({
             </Select>
           </div>
 
-          {/* Code Editor */}
           <div className="space-y-2">
-            <label className="block text-sm text-gray-400">Code</label>
+            <label className="block text-sm text-gray-400">{t("snippet_form.code")}</label>
             <div className="bg-[#151515] rounded-xl overflow-hidden shadow-md border border-[#2a2a2a]">
               <div className="flex items-center gap-2 px-4 py-2 bg-[#202020] border-b border-[#2a2a2a]">
                 <span className="w-3 h-3 bg-red-500 rounded-full"></span>
                 <span className="w-3 h-3 bg-yellow-400 rounded-full"></span>
                 <span className="w-3 h-3 bg-green-500 rounded-full"></span>
-                <span className="ml-3 text-sm text-gray-400">Monokai</span>
               </div>
               <textarea
                 value={content}
@@ -190,14 +190,13 @@ export default function SnippetForm({
                 rows={12}
                 required
                 className="w-full bg-transparent font-mono text-sm p-4 text-gray-100 outline-none resize-none whitespace-pre-wrap"
-                placeholder={`// write your code here...`}
+                placeholder={t("snippet_form.write_your_code_here")}
               />
             </div>
           </div>
 
-          {/* Tags */}
           <div className="space-y-2">
-            <label className="block text-sm text-gray-400">Tags</label>
+            <label className="block text-sm text-gray-400">{t("snippet_form.tags")}</label>
             <input
               value={tags}
               onChange={(e) => setTags(e.target.value)}
@@ -221,15 +220,15 @@ export default function SnippetForm({
                       disabled={!userId?.user}
                       className={`w-[100px] mr-2 mt-4 text-[14px] py-3 rounded-xl cursor-pointer bg-white text-black font-semibold hover:bg-white transition`}
                     >
-                      {loading ? "Saving..." : "Save"}
+                      {loading ? `${t("snippet_form.save_loading")}` : `${t("snippet_form.save")}`}
                     </Button>
                   </div>
                 </TooltipTrigger>
                 <TooltipContent side="top" align="center">
                   <p>
                     {userId?.user
-                      ? "Lưu snippet của bạn"
-                      : "Bạn cần đăng nhập để lưu"}
+                      ? `${t("snippet_form.tool_save")}`
+                      : `${t("snippet_form.you_need_to")}`}
                   </p>
                 </TooltipContent>
               </Tooltip>
@@ -249,15 +248,15 @@ export default function SnippetForm({
                       disabled={!userId?.user}
                       className={`w-[100px] mt-4 text-[14px] py-3 cursor-pointer rounded-xl bg-white text-black font-semibold hover:bg-white transition `}
                     >
-                      Share
+                      {t("snippet_form.share")}
                     </Button>
                   </div>
                 </TooltipTrigger>
                 <TooltipContent side="top" align="center">
                   <p>
                     {userId?.user
-                      ? "Chia sẻ snippet của bạn"
-                      : "Bạn cần đăng nhập để chia sẻ"}
+                      ? `${t("snippet_form.share_your_snippet")}`
+                      : `${t("you_need_to_log_in")}`}
                   </p>
                 </TooltipContent>
               </Tooltip>

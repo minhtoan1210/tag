@@ -33,8 +33,6 @@ export async function POST(req: Request) {
       },
     });
 
-    console.log("✅ User created:", newUser.email);
-
     return NextResponse.json(
       {
         message: "User registered successfully",
@@ -47,7 +45,7 @@ export async function POST(req: Request) {
       { status: 201 }
     );
   } catch (error) {
-    console.error("❌ Register error:", error);
+    console.log(error);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }

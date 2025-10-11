@@ -1,6 +1,71 @@
 {
-  "siteTitle": "SnippetShare",
-  "createSnippet": "Create snippet",
-  "edit": "Edit",
-  "delete": "Delete"
+  "home": "Home",
+  "snippets": "Snippets You",
+  "profile": "Profile",
+  "login": "Login",
+  "signup": "Sign Up",
+  "logout": "Logout",
+  "loading": "Checking login...",
+  "home_page": {
+    "snippet_share": "SnippetShare",
+    "snippets": "Snippets",
+    "new": "New",
+    "title": "Welcome to SnippetShare — quick code sharing.",
+    "btn": {
+      "edit": "Edit",
+      "delete": "Delete",
+      "no_snippets": "No snippets found.",
+      "tags": "Tags",
+      "no_tag": "No Tag"
+    }
+  },
+  "login_page": {
+    "sign_in": "Sign In",
+    "account": "Don’t have an account?",
+    "sign_up": "Sign up",
+    "form": {
+      "email": "Email",
+      "password": "Password",
+      "logging": "Logging in...",
+      "login": "Login"
+    }
+  },
+  "register_page": {
+    "title_form": "Create Account",
+    "already_account": "Already have an account?",
+    "sign_in": "Sign in",
+    "email": "Email",
+    "password": "Password",
+    "confirm_password": "Confirm Password",
+    "register": "Register"
+  },
+  "snippets_page": {
+    "title": "A list of all snippets in your project including title, description and tags.",
+    "add": "Add Snippet"
+  },
+  "snippet_form": {
+    "write_your_code_here": "write your code here",
+    "title": "Title",
+    "language": "Language",
+    "select_language": "Select language",
+    "your_snippet": "Your snippet title...",
+    "code": "Code",
+    "tags": "Tags",
+    "snippet": "Snippet",
+    "title1": "Create and share beautiful images of your source code.",
+    "title2": "Start typing or drop a file into the text area to get started.",
+    "save": "Save",
+    "save_loading": "Saving...",
+    "tool_save": "Save your snippet",
+    "you_need_to": "You need to login to save",
+    "share": "Share",
+    "share_your_snippet": "Share your snippet",
+    "you_need_to_log_in": "You need to log in to share"
+  },
+  "profile_page": {
+    "loading": "Checking login...",
+    "no_snippets_found": " No snippets found.",
+    "tags": "Tags",
+    "no_tag": "No Tag"
+  }
 }

@@ -1,13 +1,21 @@
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: NextRequest, { params }: any) {
+export async function GET(
+  req: NextRequest,
+  context: { params: { id: string } }
+) {
   try {
-    const { id } = params;
+    const { params } = context;
+    const id = params.id;
 
     const snippets = await prisma.snippet.findMany({
       where: { authorId: id },
       orderBy: { createdAt: "desc" },
+      include: {
+        tags: { include: { tag: true } },
+        author: true,
+      },
     });
 
     const user = await prisma.user.findUnique({
@@ -20,7 +28,7 @@ export async function GET(req: NextRequest, { params }: any) {
 
     return NextResponse.json({ data: { snippets, user } }, { status: 200 });
   } catch (error) {
-    console.error("❌ Error fetching user snippets:", error);
+    console.log(error);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }

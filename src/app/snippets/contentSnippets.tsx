@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
 
 type ContentSnippets = {
   user: string | undefined;
@@ -17,6 +18,7 @@ export default function ContentSnippetsComponent({
 }: ContentSnippets) {
   const [list, setList] = useState<any[]>([]);
   const router = useRouter();
+  const { t } = useTranslation();
 
   const fetchSnippets = async () => {
     const res = await fetch(`/api/snippets?page=${page}`);
@@ -87,7 +89,7 @@ export default function ContentSnippetsComponent({
               </SyntaxHighlighter>
 
               <div className="text-sm text-gray-300 mt-2">
-                <strong>Tags:</strong>{" "}
+                <strong>{t("home_page.btn.tags")}:</strong>{" "}
                 {item.tags && item.tags.length > 0
                   ? item.tags
                       ?.map(
@@ -95,30 +97,30 @@ export default function ContentSnippetsComponent({
                           itemTag.tag?.name
                       )
                       .join(", ")
-                  : "No tags"}
+                  : `${t("home_page.btn.no_tag")}`}
               </div>
 
-              {user && page !==  'home' && (
+              {user && page !== "home" && (
                 <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                   <Link
                     href={`/snippets/post-edit/${item.id}`}
                     className="text-indigo-400 hover:text-indigo-300 text-sm"
                   >
-                    Edit
+                    {t("home_page.btn.edit")}
                   </Link>
                   <button
                     onClick={() => handleDetele(item.id)}
                     className="text-red-400 hover:text-red-300 text-sm cursor-pointer"
                   >
-                    Delete
+                    {t("home_page.btn.delete")}
                   </button>
                 </div>
               )}
             </div>
           ))}
         {list.length === 0 && (
-          <div className="col-span-full text-center text-gray-500 text-sm">
-            No snippets found.
+          <div className="text-gray-500 text-sm">
+            {t("home_page.btn.no_snippets")}
           </div>
         )}
       </div>

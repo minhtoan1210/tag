@@ -5,12 +5,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 export default function FormLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { t } = useTranslation();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,8 +28,6 @@ export default function FormLogin() {
 
       const data = await res.json();
 
-      console.log("data", data);
-
       if (!res.ok) {
         toast.error(data.error || "Login failed ");
         setLoading(false);
@@ -35,7 +35,6 @@ export default function FormLogin() {
       }
 
       if (!data) {
-        console.log("asdsa")
         setLoading(false);
         return;
       }
@@ -45,7 +44,7 @@ export default function FormLogin() {
       router.push("/");
       router.refresh();
     } catch (err) {
-      console.error(err);
+      console.log(err);
       toast.error("Internal error ");
       setLoading(false);
     }
@@ -55,7 +54,7 @@ export default function FormLogin() {
     <form onSubmit={handleLogin} className="space-y-4">
       <div className="space-y-2">
         <Label htmlFor="email" className="text-gray-400">
-          Email
+          {t("login_page.form.email")}
         </Label>
         <Input
           id="email"
@@ -70,7 +69,7 @@ export default function FormLogin() {
 
       <div className="space-y-2">
         <Label htmlFor="password" className="text-gray-400">
-          Password
+          {t("login_page.form.password")}
         </Label>
         <Input
           id="password"
@@ -87,7 +86,7 @@ export default function FormLogin() {
         type="submit"
         className="w-full mt-2 cursor-pointer bg-white text-[black] hover:bg-white hover:text-black"
       >
-        {loading ? "Logging in..." : "Login"}
+        {loading ? `${t("login_page.form.logging")}` : `${t("login_page.form.login")}`}
       </Button>
     </form>
   );

@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 export default function RegisterFormPage() {
   const [formData, setFormData] = useState({
@@ -14,6 +15,7 @@ export default function RegisterFormPage() {
     confirmPassword: "",
   });
   const router = useRouter();
+  const { t } = useTranslation();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -45,7 +47,7 @@ export default function RegisterFormPage() {
       toast.success("Registered successfully!");
       router.push("/login");
     } catch (error) {
-      console.error("Error registering:", error);
+      console.log(error);
       toast.error("Something went wrong!");
     }
   };
@@ -54,12 +56,12 @@ export default function RegisterFormPage() {
     <form onSubmit={handleRegister} className="space-y-4">
       <div className="space-y-2">
         <Label htmlFor="email" className="text-gray-400">
-          Email
+          {t("register_page.email")}
         </Label>
         <Input
           id="email"
           type="email"
-          placeholder="Nhập Email vào"
+          placeholder="you@example.com"
           value={formData.email}
           onChange={handleChange}
           required
@@ -69,12 +71,12 @@ export default function RegisterFormPage() {
 
       <div className="space-y-2">
         <Label htmlFor="password" className="text-gray-400">
-          Password
+          {t("register_page.password")}
         </Label>
         <Input
           id="password"
           type="password"
-          placeholder="Nhập Password"
+          placeholder={t("register_page.password")}
           value={formData.password}
           onChange={handleChange}
           required
@@ -84,12 +86,12 @@ export default function RegisterFormPage() {
 
       <div className="space-y-2">
         <Label htmlFor="confirmPassword" className="text-gray-400">
-          Confirm Password
+         {t("register_page.confirm_password")}
         </Label>
         <Input
           id="confirmPassword"
           type="password"
-          placeholder="Nhập Lại Password"
+          placeholder={t("register_page.confirm_password")}
           value={formData.confirmPassword}
           onChange={handleChange}
           required
@@ -97,8 +99,11 @@ export default function RegisterFormPage() {
         />
       </div>
 
-      <Button type="submit" className="w-full mt-2 cursor-pointer bg-[white] text-[#000] hover:bg-[white]">
-        Register
+      <Button
+        type="submit"
+        className="w-full mt-2 cursor-pointer bg-[white] text-[#000] hover:bg-[white]"
+      >
+        {t("register_page.register")}
       </Button>
     </form>
   );

@@ -2,6 +2,7 @@
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
 
 type ContentSnippets = {
   page?: string;
@@ -12,6 +13,7 @@ export default function CardProfileComponent({
   list,
 }: ContentSnippets) {
   const router = useRouter();
+  const {t} = useTranslation()
 
   const handleShowDetail = (id: string) => {
     router.push(`/snippets/post-edit/${id}`);
@@ -66,20 +68,20 @@ export default function CardProfileComponent({
             </SyntaxHighlighter>
 
             <div className="text-sm text-gray-300 mt-2">
-              <strong>Tags:</strong>{" "}
+              <strong> {t("profile_page.tags")}:</strong>
               {item.tags && item.tags.length > 0
                 ? item.tags
                     .map(
                       (itemTag: { tag: { name: string } }) => itemTag.tag?.name
                     )
                     .join(", ")
-                : "No tags"}
+                : `${t("profile_page.no_tag")}`}
             </div>
           </div>
         ))}
         {list.length === 0 && (
           <div className="col-span-full text-center text-gray-500 text-sm">
-            No snippets found.
+           {t("profile_page.no_snippets_found")}
           </div>
         )}
       </div>

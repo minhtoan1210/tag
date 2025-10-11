@@ -2,9 +2,11 @@
 
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
 
 export default function LogoutButton() {
   const router = useRouter();
+  const {t} = useTranslation()
 
   const handleLogout = async () => {
     await fetch("/api/logout", { method: "POST" });
@@ -14,7 +16,8 @@ export default function LogoutButton() {
 
   return (
     <Button onClick={handleLogout} size="sm" className="cursor-pointer">
-      Logout
+      {t("logout")}
     </Button>
   );
 }
+ 

@@ -1,6 +1,71 @@
 {
-  "siteTitle": "SnippetShare",
-  "createSnippet": "Tạo snippet",
-  "edit": "Sửa",
-  "delete": "Xóa"
+  "home": "Trang chủ",
+  "snippets": "Các đoạn mã",
+  "profile": "Hồ sơ",
+  "login": "Đăng nhập",
+  "signup": "Đăng ký",
+  "logout": "Đăng xuất",
+  "loading": "Đang kiểm tra đăng nhập...",
+  "home_page": {
+    "snippet_share": "SnippetShare",
+    "snippets": "Các đoạn mã",
+    "new": "Mới",
+    "title": "Chào mừng đến với SnippetShare — chia sẻ code nhanh chóng.",
+    "btn": {
+      "edit": "Chỉnh sửa",
+      "delete": "Xóa",
+      "no_snippets": "Không có đoạn mã nào.",
+      "tags": "Thẻ",
+      "no_tag": "Không có thẻ"
+    }
+  },
+  "login_page": {
+    "sign_in": "Đăng nhập",
+    "account": "Chưa có tài khoản?",
+    "sign_up": "Đăng ký",
+    "form": {
+      "email": "Email",
+      "password": "Mật khẩu",
+      "logging": "Đang đăng nhập...",
+      "login": "Đăng nhập"
+    }
+  },
+  "register_page": {
+    "title_form": "Tạo tài khoản",
+    "already_account": "Đã có tài khoản?",
+    "sign_in": "Đăng nhập",
+    "email": "Email",
+    "password": "Mật khẩu",
+    "confirm_password": "Xác nhận mật khẩu",
+    "register": "Đăng ký"
+  },
+  "snippets_page": {
+    "title": "Danh sách tất cả các đoạn mã trong dự án của bạn, bao gồm tiêu đề, mô tả và thẻ.",
+    "add": "Thêm đoạn mã"
+  },
+  "snippet_form": {
+    "write_your_code_here": "Viết code của bạn ở đây",
+    "title": "Tiêu đề",
+    "language": "Ngôn ngữ",
+    "select_language": "Chọn ngôn ngữ",
+    "your_snippet": "Tiêu đề đoạn mã của bạn...",
+    "code": "Code",
+    "tags": "Thẻ",
+    "snippet": "Đoạn mã",
+    "title1": "Tạo và chia sẻ hình ảnh đẹp từ code của bạn.",
+    "title2": "Bắt đầu gõ hoặc kéo thả file vào vùng nhập để bắt đầu.",
+    "save": "Lưu",
+    "save_loading": "Đang lưu...",
+    "tool_save": "Lưu đoạn mã của bạn",
+    "you_need_to": "Bạn cần đăng nhập để lưu",
+    "share": "Chia sẻ",
+    "share_your_snippet": "Chia sẻ đoạn mã của bạn",
+    "you_need_to_log_in": "Bạn cần đăng nhập để chia sẻ"
+  },
+  "profile_page": {
+    "loading": "Đang kiểm tra đăng nhập...",
+    "no_snippets_found": "Không có đoạn mã nào.",
+    "tags": "Thẻ",
+    "no_tag": "Không có thẻ"
+  }
 }

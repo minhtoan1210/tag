@@ -2,12 +2,14 @@
 import SnippetForm from "@/components/SnippetForm";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function SnippetsEditPage() {
   const params = useParams();
   const id = params.id;
   const [snippet, setSnippet] = useState<any>(null);
   const [loadingSnippet, setLoadingSnippet] = useState(true);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (!id) return;
@@ -28,7 +30,8 @@ export default function SnippetsEditPage() {
   }, [id]);
 
 
-  if (loadingSnippet) return <div>Đang kiểm tra đăng nhập...</div>;
+  if (loadingSnippet) return <div className="text-[white] text-center mt-2">{t("loading")}</div>;
+  
   return (
     <SnippetForm typePage="update" initial={snippet} />
   );

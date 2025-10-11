@@ -56,10 +56,9 @@ export async function POST(req: Request) {
       maxAge: 60 * 60 * 24 * 7, 
     });
 
-    console.log("✅ User logged in:", user.email);
     return res;
   } catch (error) {
-    console.error("❌ Login error:", error);
+    console.log(error);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }

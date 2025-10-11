@@ -7,8 +7,6 @@ export function middleware(req: NextRequest) {
   const url = req.nextUrl.clone();
   const path = req.nextUrl.pathname;
 
-  console.log("token", token)
-
   const protectedPaths = ["/snippets", "/snippets/post-new"];
 
   if (protectedPaths.some((protectedPath) => path.startsWith(protectedPath))) {
@@ -16,10 +14,9 @@ export function middleware(req: NextRequest) {
       url.pathname = "/login";
       return NextResponse.redirect(url);
     }
-
     try {
       jwt.verify(token, process.env.JWT_SECRET!);
-      return NextResponse.next(); 
+      return NextResponse.next();
     } catch {
       url.pathname = "/login";
       return NextResponse.redirect(url);
@@ -31,4 +28,5 @@ export function middleware(req: NextRequest) {
 
 export const config = {
   matcher: ["/snippets", "/snippets/post-new"],
+  runtime: "nodejs",
 };

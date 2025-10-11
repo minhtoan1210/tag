@@ -26,7 +26,7 @@ export async function GET(req: Request) {
         };
         userId = decoded.userId;
       } catch (err) {
-        console.warn("⚠️ Invalid token:", err);
+        console.log(err);
       }
     }
 
@@ -77,7 +77,7 @@ export async function GET(req: Request) {
 
     return NextResponse.json(snippets);
   } catch (error) {
-    console.error("❌ Error fetching snippets:", error);
+    console.log(error);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }
@@ -104,11 +104,9 @@ export async function POST(req: Request) {
       };
       userId = decoded.userId;
     } catch (err) {
-      console.error("Invalid token:", err);
+      console.log(err);
       return NextResponse.json({ error: "Invalid token" }, { status: 401 });
     }
-
-    console.log("userId", userId)
 
     const body = (await req.json()) as SnippetBody;
 
@@ -155,7 +153,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json(snippet, { status: 201 });
   } catch (error) {
-    console.error("Error creating snippet:", error);
+    console.log(error);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }
@@ -184,7 +182,7 @@ export async function PUT(req: Request) {
       };
       userId = decoded.userId;
     } catch (err) {
-      console.error("Invalid token:", err);
+      console.log(err);
       return NextResponse.json({ error: "Invalid token" }, { status: 401 });
     }
 
@@ -267,7 +265,7 @@ export async function PUT(req: Request) {
 
     return NextResponse.json(updated, { status: 200 });
   } catch (error) {
-    console.error("Error updating/creating snippet:", error);
+    console.log(error);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }
@@ -301,7 +299,7 @@ export async function DELETE(req: Request) {
       };
       userId = decoded.userId;
     } catch (err) {
-      console.error("Invalid token:", err);
+      console.log(err);
       return NextResponse.json({ error: "Invalid token" }, { status: 401 });
     }
 
@@ -334,7 +332,7 @@ export async function DELETE(req: Request) {
 
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (error) {
-    console.error("Error deleting snippet:", error);
+    console.log(error);
     return NextResponse.json(
       { message: "Failed to delete snippet" },
       { status: 500 }
