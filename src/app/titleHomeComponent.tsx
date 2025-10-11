@@ -7,12 +7,12 @@ export default function TitleHomeComponent({ token }: any) {
 
   return (
     <>
-      <header className="flex items-center justify-between mb-6">
+      <header className="flex items-center justify-between mb-6 sm:flex-row md:flex-row lg:flex-row flex-col">
         <h1 className="text-2xl font-bold text-[white]">
           {t("home_page.snippet_share")}
         </h1>
         {token && (
-          <>
+          <div className="mt-2">
             <nav className="space-x-4">
               <Link href="/snippets" className="text-[white]">
                 {t("home_page.snippets")}
@@ -24,7 +24,7 @@ export default function TitleHomeComponent({ token }: any) {
                 {t("home_page.new")}
               </Link>
             </nav>
-          </>
+          </div>
         )}
       </header>
 
