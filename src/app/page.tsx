@@ -20,7 +20,7 @@ export default async function Home() {
   const token = cookieStore.get("token")?.value;
 
   return (
-    <main className="max-w-3xl mx-auto p-6">
+    <main className="max-w-5xl mx-auto p-6">
       <TitleHomeComponent token={token} />
       <ContentSnippetsComponent user={token} page="home" />
     </main>

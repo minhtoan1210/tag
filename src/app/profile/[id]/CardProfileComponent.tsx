@@ -21,7 +21,7 @@ export default function CardProfileComponent({
 
   return (
     <div className="overflow-hidden rounded-lg border border-gray-700 bg-[#111827] shadow">
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-2 p-2">
+      <div className="grid gap-4 lg:grid-cols-2 p-2 grid-cols-1">
         {Array.isArray(list) && list?.map((item: any) => (
           <div
             key={item.id}
