@@ -25,7 +25,7 @@ export default function RegisterClient() {
         </CardContent>
         <CardFooter className="text-sm text-center text-muted-foreground">
           {t("register_page.already_account")}
-          <Link href="/login" className="text-primary underline ml-1">
+          <Link href="/login" className="underline ml-1 text-[white]">
             {t("register_page.sign_in")}
           </Link>
         </CardFooter>
