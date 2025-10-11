@@ -258,7 +258,7 @@ export default function SnippetForm({
                   <p>
                     {userId?.user
                       ? `${t("snippet_form.share_your_snippet")}`
-                      : `${t("you_need_to_log_in")}`}
+                      : `${t("snippet_form.you_need_to_log_in")}`}
                   </p>
                 </TooltipContent>
               </Tooltip>
