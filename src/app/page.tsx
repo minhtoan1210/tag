@@ -2,11 +2,22 @@ import Link from "next/link";
 import { cookies } from "next/headers";
 import ContentSnippetsComponent from "./snippets/contentSnippets";
 
+export const metadata = {
+  title: "SnippetShare - Chia sẻ code nhanh chóng",
+  description:
+    "Chào mừng đến với SnippetShare, nơi chia sẻ code hữu ích nhanh chóng.",
+  openGraph: {
+    title: "SnippetShare",
+    description: "Chia sẻ code nhanh chóng",
+    url: "https://tag-liard.vercel.app/",
+    siteName: "SnippetShare",
+    type: "website",
+  },
+};
+
 export default async function Home() {
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
-
-  console.log("token", token);
 
   return (
     <main className="max-w-3xl mx-auto p-6">
@@ -34,7 +45,7 @@ export default async function Home() {
           Chào mừng đến với SnippetShare — chia sẻ code nhanh chóng.
         </p>
       </section>
-        <ContentSnippetsComponent user={token} page="home"/>
+      <ContentSnippetsComponent user={token} page="home" />
     </main>
   );
 }
