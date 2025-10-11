@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useTranslation } from "react-i18next";
 
 export default function TitleHomeComponent({ token }: any) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <>
