@@ -20,6 +20,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "./ui/button";
 import { useTranslation } from "react-i18next";
+import { estimateComplexity } from "@/lib/complexityAnalyzer";
 
 type SnippetFormType = {
   initial?: any;
@@ -192,6 +193,7 @@ export default function SnippetForm({
                 className="w-full bg-transparent font-mono text-sm p-4 text-gray-100 outline-none resize-none whitespace-pre-wrap"
                 placeholder={t("snippet_form.write_your_code_here")}
               />
+              <div>{t("complexity")}: {estimateComplexity(content)}</div>
             </div>
           </div>
 

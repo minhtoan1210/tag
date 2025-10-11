@@ -67,5 +67,6 @@
     "no_snippets_found": " No snippets found.",
     "tags": "Tags",
     "no_tag": "No Tag"
-  }
+  },
+   "complexity": "Complexity"
 }

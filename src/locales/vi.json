@@ -67,5 +67,6 @@
     "no_snippets_found": "Không có đoạn mã nào.",
     "tags": "Thẻ",
     "no_tag": "Không có thẻ"
-  }
+  },
+  "complexity": "Độ phức tạp"
 }
