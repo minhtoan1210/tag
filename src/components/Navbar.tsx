@@ -37,19 +37,14 @@ export default function Navbar({ user, token }: any) {
   return (
     <header className="w-full border-b border-[#c2c2c2] bg-[#000000] backdrop-blur-md sticky top-0 z-50">
       <div className="max-w-6xl mx-auto flex items-center justify-between px-6 py-3">
-        {/* Logo */}
         <Link href="/" className="text-xl font-semibold text-white">
           CodeSnippet
         </Link>
-
-        {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
           {navLinks}
         </nav>
 
-        {/* Right side */}
         <div className="flex items-center gap-2">
-          {/* Language selector */}
           <DropdownMenu>
             <DropdownMenuTrigger
               asChild
@@ -72,7 +67,6 @@ export default function Navbar({ user, token }: any) {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          {/* Auth Buttons (desktop hidden on mobile) */}
           <div className="hidden md:flex items-center gap-2">
             {token ? (
               <LogoutButton />
@@ -88,7 +82,6 @@ export default function Navbar({ user, token }: any) {
             )}
           </div>
 
-          {/* Mobile Hamburger Menu */}
           <div className="md:hidden">
             <Button
               variant="ghost"
