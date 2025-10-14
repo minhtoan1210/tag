@@ -63,10 +63,11 @@
     "you_need_to_log_in": "Bạn cần đăng nhập để chia sẻ"
   },
   "profile_page": {
-    "loading": "Đang kiểm tra đăng nhập...",
+    "loading": "loading...",
     "no_snippets_found": "Không có đoạn mã nào.",
     "tags": "Thẻ",
     "no_tag": "Không có thẻ"
   },
-  "complexity": "Độ phức tạp"
+  "complexity": "Độ phức tạp",
+  "author": "Tác giả"
 }

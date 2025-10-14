@@ -23,7 +23,7 @@ export default function ProfileCardComponent() {
       .finally(() => setLoading(false));
   }, [id]);
 
-  if (loading) return <div>{t("profile_page.loading")}</div>;
+  if (loading) return <div className="text-[white]">{t("profile_page.loading")}</div>;
 
   return (
     <>

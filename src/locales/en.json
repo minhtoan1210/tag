@@ -63,10 +63,11 @@
     "you_need_to_log_in": "You need to log in to share"
   },
   "profile_page": {
-    "loading": "Checking login...",
+    "loading": "loading...",
     "no_snippets_found": " No snippets found.",
     "tags": "Tags",
     "no_tag": "No Tag"
   },
-   "complexity": "Complexity"
+   "complexity": "Complexity",
+   "author": "author"
 }

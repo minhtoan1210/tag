@@ -128,6 +128,13 @@ export default function ContentSnippetsComponent({
                       </button>
                     </div>
                   )}
+
+                  <Link
+                    href={`/profile/${item?.author?.id}`}
+                    className="cursor-pointer text-gray-300"
+                  >
+                   <span>{t("author")}</span>: {item?.author?.email}
+                  </Link>
                 </div>
               ))}
             {list.length === 0 && (
